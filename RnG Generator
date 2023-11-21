@@ -1,0 +1,88 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
+
+
+
+
+
+public partial class UI : Control
+{	
+	
+		//Array kk = Array.CreateInstance( typeof(int), i);
+		[Export]
+		int Column = 5;
+		[Export]
+		int Row = 5 ;
+		[Export]
+		int MaxColumnValues = 16;
+		int i = 1;
+		
+		List<int> ColumnNumbers = new List<int>();
+		List<int> ChosenNumbers = new List<int>();
+
+		static Random random = new Random();
+		
+		[Export]
+		int RnG;
+	
+	public override void _Ready()
+	{
+		
+		ColumnSetup();
+
+	}
+
+	
+	
+	
+	 void ColumnSetup()
+	{
+		while (i < MaxColumnValues)
+		{
+			ColumnNumbers.Add(i);
+			i++;
+			if (ColumnNumbers.Contains(0))
+			{
+				ColumnNumbers.Remove(0);
+				
+			}
+			
+		}
+
+		while (i == MaxColumnValues)
+		{
+			int r = random.Next(ColumnNumbers.Count);
+			ChosenNumbers.Add(r);
+			ColumnNumbers.Remove(r);
+
+			RnG++;
+			
+			if (RnG == 5)
+			{
+				i++;
+				
+				GD.Print("ChosenNumbers");
+				foreach(var item in ChosenNumbers)
+				{
+					GD.Print(item);
+				}
+
+				GD.Print("ColumnNumbers");
+				foreach(var item in ColumnNumbers)
+				{
+					GD.Print(item);
+				}
+			}
+		}
+
+		// foreach(var item in ColumnNumbers)
+		// {
+		// 	GD.Print(item);
+		// }
+		
+	}
