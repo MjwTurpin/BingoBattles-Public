@@ -13,28 +13,29 @@ using System.Reflection.Metadata.Ecma335;
 public partial class UI : Control
 {	
 	
-		//Array kk = Array.CreateInstance( typeof(int), i);
-		[Export]
-		int Column = 5;
-		[Export]
-		int Row = 5 ;
-		[Export]
-		int MaxColumnValues = 16;
-		int i = 1;
-		
-		List<int> ColumnNumbers = new List<int>();
-		List<int> ChosenNumbers = new List<int>();
+//Array kk = Array.CreateInstance( typeof(int), i);
+[Export]
+int Column = 5;
+[Export]
+int Row = 5 ;
+[Export]
 
-		static Random random = new Random();
+int MaxColumnValues = 16;
+				
+List<int> ColumnNumbers = new List<int>();
+List<int> ChosenNumbers = new List<int>();
+
+int ColumnOffset = 0;
+int RowOffset = 0;
+
+int RnG;
+
+static Random random = new Random();
 		
-		[Export]
-		int RnG;
 	
 	public override void _Ready()
 	{
-		
 		ColumnSetup();
-
 	}
 
 	
@@ -42,47 +43,42 @@ public partial class UI : Control
 	
 	 void ColumnSetup()
 	{
-		while (i < MaxColumnValues)
+		for (int i = 1 + ColumnOffset; i < MaxColumnValues; i++)
 		{
 			ColumnNumbers.Add(i);
-			i++;
-			if (ColumnNumbers.Contains(0))
-			{
-				ColumnNumbers.Remove(0);
-				
-			}
-			
 		}
 
-		while (i == MaxColumnValues)
+
+		for (int i = 1; i <= Column; i++)
 		{
 			int r = random.Next(ColumnNumbers.Count);
+			RnG = r;
 			ChosenNumbers.Add(r);
-			ColumnNumbers.Remove(r);
+			GD.Print(r);
 
-			RnG++;
-			
-			if (RnG == 5)
-			{
-				i++;
-				
-				GD.Print("ChosenNumbers");
-				foreach(var item in ChosenNumbers)
-				{
-					GD.Print(item);
-				}
-
-				GD.Print("ColumnNumbers");
-				foreach(var item in ColumnNumbers)
-				{
-					GD.Print(item);
-				}
-			}
+			ColumnRemoval();
 		}
-
-		// foreach(var item in ColumnNumbers)
-		// {
-		// 	GD.Print(item);
-		// }
-		
+				
 	}
+
+	void ColumnRemoval()
+	{
+		for (int i = 1; i <= Column;)
+		{
+			ColumnNumbers.Remove(RnG);
+			GD.Print(RnG);
+		}
+	}	
+		
+
+
+	
+	
+	
+	
+	
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	}
+}
